@@ -23,7 +23,17 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Route Imports
-// app.use("/api/v1/");
+const user = require("./routes/userRoute");
+const supplier = require("./routes/suppliersRoute");
+const product = require("./routes/productRoute");
+const order = require("./routes/orderRoute");
+const inventory = require("./routes/InventoryRoute");
+
+app.use("/api/v1/", user);
+app.use("/api/v1/", supplier);
+app.use("/api/v1/", product);
+app.use("/api/v1/", order);
+app.use("/api/v1/", inventory);
 
 app.use(errorMiddleware);
 module.exports = app;

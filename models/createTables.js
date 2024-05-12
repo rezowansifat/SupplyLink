@@ -7,10 +7,12 @@ const createTables = async () => {
     IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Users')
     BEGIN
     CREATE TABLE Users (
-      id INT IDENTITY(1,1) PRIMARY KEY,
-      username VARCHAR(255) NOT NULL UNIQUE,
-      password_hash VARCHAR(255) NOT NULL,
-      role VARCHAR(50) NOT NULL
+        id INT IDENTITY(1,1) PRIMARY KEY,
+        username VARCHAR(255) NOT NULL UNIQUE,
+        password_hash VARCHAR(255) NOT NULL,
+        name VARCHAR(255) NOT NULL,
+        mobile VARCHAR(20) NOT NULL,
+        email VARCHAR(255) NOT NULL UNIQUE,
     );
     END;
 
@@ -18,8 +20,11 @@ const createTables = async () => {
     BEGIN
       CREATE TABLE Suppliers (
         id INT IDENTITY(1,1) PRIMARY KEY,
+        username VARCHAR(255) NOT NULL UNIQUE,
+        password_hash VARCHAR(255) NOT NULL,
         name VARCHAR(255) NOT NULL,
-        contact_info VARCHAR(MAX)
+        mobile VARCHAR(20) NOT NULL,
+        email VARCHAR(255) NOT NULL UNIQUE,
       );
     END;
 
@@ -31,16 +36,6 @@ const createTables = async () => {
         description VARCHAR(MAX),
         price DECIMAL(18,2) NOT NULL,
         supplier_id INT FOREIGN KEY REFERENCES Suppliers(id)
-      );
-    END;
-
-    IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'PurchaseOrders')
-    BEGIN
-      CREATE TABLE PurchaseOrders (
-        id INT IDENTITY(1,1) PRIMARY KEY,
-        product_id INT FOREIGN KEY REFERENCES Products(id),
-        quantity INT NOT NULL,
-        order_date DATETIME DEFAULT GETDATE()
       );
     END;
 
@@ -59,7 +54,7 @@ const createTables = async () => {
         id INT IDENTITY(1,1) PRIMARY KEY,
         product_id INT FOREIGN KEY REFERENCES Products(id),
         quantity INT NOT NULL,
-        customer_id INT,
+        customer_id INT FOREIGN KEY REFERENCES Users(id),
         order_date DATETIME DEFAULT GETDATE()
       );
     END;
